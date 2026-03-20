@@ -1,11 +1,24 @@
 const { Organization} = require('../models')
+const cloudinary  = require('../middleware/cloudinary')
 
 exports.createOrganization = async(req, res) =>{
     try{
-        const {Logo, name, address, email, phoneNumber} = req.body
+
+        const files = req.files.logo
+        const afilepath = files.map((photo)=>photo.path)
+        console.log('this is the afilepaths log',afilepath)
+        const uploadPicturetoCloudinary = afilepath.map((e)=> cloudinary.uploader.upload(e))
+        console.log('this is uploadPictureTocloudinarys response', uploadPicturetoCloudinary);
+        
+
+        const uploadResponse = await Promise.all(uploadPicturetoCloudinary) 
+        console.log('this is uploadResponses means', uploadResponse)
+        const extraSecureurl = uploadResponse.map((e)=>e.secure_url)
+        console.log('this is extraSecures own', extraSecureurl)
+        const {name, address, email, phoneNumber} = req.body
 
         const newOrg = await Organization.create({
-            Logo, 
+            logo: extraSecureurl,
             name,
             email,
             address,
@@ -24,6 +37,8 @@ exports.createOrganization = async(req, res) =>{
             message: "something went wrong",
             data: error.message
         })
+        console.log(error)
+
 
     }
 }
