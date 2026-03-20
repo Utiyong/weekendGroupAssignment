@@ -14,7 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Organization.init({
-    logo: DataTypes.STRING,
+    id:{
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey:true,
+      allowNull:false
+
+    },
+    logo: DataTypes.JSON,
     name: DataTypes.STRING,
     address: DataTypes.STRING,
     email: DataTypes.STRING,

@@ -11,7 +11,7 @@ module.exports = {
       },
       logo: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       name: {
         allowNull: false,
