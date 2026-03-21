@@ -28,6 +28,13 @@ exports.createOrder = async(req, res) =>{
         console.log(tstaff, 'this is tstaff');
 
         const tOrg = newStaff.organizationId
+
+        await Promise.all(
+                orderfile.map((e)=>{
+                         fs.unlinkSync(e.path)
+                                
+                     })
+                )
         
 
 
