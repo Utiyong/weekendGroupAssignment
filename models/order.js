@@ -10,12 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.Organization.hasMany(models.order, {foreignKey: "organizationId", as:"ord"})
     }
   }
   order.init({
+      id:{
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey:true,
+      allowNull:false
+    },
     Type: DataTypes.STRING,
-    images: DataTypes.STRING,
+    images: DataTypes.JSON,
     amount: DataTypes.STRING,
     status: DataTypes.ENUM('In Transit', 'Shipped', 'Out for delivery', 'Delivered'),
     staff:DataTypes.STRING,
