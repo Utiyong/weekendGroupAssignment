@@ -59,7 +59,7 @@ exports.createStaff = async(req, res) =>{
             data: newStaff
         });
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).json({ 
             message: "something went wrong",
             data: error.message
