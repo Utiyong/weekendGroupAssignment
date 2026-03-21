@@ -8,9 +8,9 @@ exports.upload = multer({
 
         },
         filename: (req, file, cb)=>{
-            const uniqueSuffix = "groupwork"
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
             console.log(file)
-            cb(null, file.fieldname + '.' + file.mimetype.split("/")[1])
+            cb(null, file.fieldname + '-' + uniqueSuffix + '-' + file.originalname)
 
         }
     }),
