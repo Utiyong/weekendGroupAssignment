@@ -14,15 +14,23 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   staffTables.init({
+    id:{
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey:true,
+      allowNull:false
+    },
     staffName: DataTypes.STRING,
     position: DataTypes.STRING,
-    organizationId: DataTypes.UUID,
+    organizationId: DataTypes.STRING,
     staffDp: DataTypes.JSON,
-    salary: DataTypes.INTEGER,
+    salary: DataTypes.STRING,
     profilePhoto: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'staffTables',
+    tableName: 'stafftables',
+    freezeTableName: true 
   });
   return staffTables;
 };
