@@ -25,36 +25,16 @@ exports.createStaff = async(req, res) =>{
     await Promise.all(
       filePaths.map((e) => fs.unlinkSync(e))
     );
-       const file = req.file.profilePhoto;
-        console.log(file) 
-       let outcome = [];
-        const filePath = file.map((element) => element.path);
-        console.log(filePath)
-
-      const cloudFiles = filePath.map(async(element) => await cloudinary.uploader.upload(element));
-    console.log(cloudFiles)
-
-    const cloudResponses = await Promise.all(cloudFiles);
-    console.log(cloudResponses)
-
-    cloudResponses.forEach((element) => {
-      const object = { secureUrl: element.secure_url, publicId: element.public_id };
-      outcome.push(object);
-    });
-    console.log(outcome)
-
-    await Promise.all(
-      filePath.map((element) => fs.unlinkSync(element))
-    );
-        const {staffName, position, staffDp, salary, profilePhoto} = req.body;
+       
+        const {staffName, position, staffDp, salary} = req.body;
         const {organizationId} = req.params; 
-        const newStaff = await staffTables.create({
+        const newStaff = await staffTables.create({ 
             staffName,
             position,
             organizationId,
             staffDp: result,
-            salary,
-            profilePhoto: outcome
+            salary
+        
         });
         res.status(201).json({
             message: 'successfully created a staff',
