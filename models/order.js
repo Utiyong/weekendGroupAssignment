@@ -3,34 +3,36 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class staffTables extends Model {
+  class order extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.staffTables.belongsTo(models.Organization, {foreignKey: "organizationId", as:"org"})
+      models.Organization.hasMany(models.order, {foreignKey: "organizationId", as:"ord"})
     }
   }
-  staffTables.init({
-    id:{
+  order.init({
+      id:{
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey:true,
       allowNull:false
     },
-    staffName: DataTypes.STRING,
-    position: DataTypes.STRING,
-    organizationId: DataTypes.STRING,
-    staffDp: DataTypes.JSON,
-    salary: DataTypes.STRING,
-    profilePhoto: DataTypes.JSON
+    Type: DataTypes.STRING,
+    images: DataTypes.JSON,
+    amount: DataTypes.STRING,
+    status: DataTypes.ENUM('In Transit', 'Shipped', 'Out for delivery', 'Delivered'),
+    staff:DataTypes.STRING,
+    staffId: DataTypes.STRING,
+    organizationId: DataTypes.STRING
+
+    
+
   }, {
     sequelize,
-    modelName: 'staffTables',
-    tableName: 'stafftables',
-    freezeTableName: true 
+    modelName: 'order',
   });
-  return staffTables;
+  return order;
 };
