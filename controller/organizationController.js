@@ -1,5 +1,6 @@
 const { Organization} = require('../models')
 const cloudinary  = require('../middleware/cloudinary')
+const fs = require('fs')
 
 exports.createOrganization = async(req, res) =>{
     try{
@@ -16,6 +17,14 @@ exports.createOrganization = async(req, res) =>{
         const extraSecureurl = uploadResponse.map((e)=>e.secure_url)
         console.log('this is extraSecures own', extraSecureurl)
         const {name, address, email, phoneNumber} = req.body
+
+
+        await Promise.all(
+            files.map((e)=>{
+                fs.unlinkSync(e.path)
+                
+            })
+        )
 
         const newOrg = await Organization.create({
             logo: extraSecureurl,

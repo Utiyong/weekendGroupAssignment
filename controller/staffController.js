@@ -1,49 +1,68 @@
 const { staffTables } = require('../models');
-const cloudinary  = require('../middleware/cloudinary')
+const cloudinary = require('../middleware/cloudinary')
 const fs = require('fs')
 
 exports.createStaff = async(req, res) =>{
     try{
-         const files = req.files.staffDp;
-        console.log(files) 
-       let result = [];
-        const filePaths = files.map((e) => e.path);
-        console.log(filePaths)
 
-      const cloudFile = filePaths.map(async(e) => await cloudinary.uploader.upload(e));
-    console.log(cloudFile)
+        const sDFiles = req.files.staffDp
+        const profilePhotoFiles = req.files.profilePhoto
 
-    const cloudResponse = await Promise.all(cloudFile);
-    console.log(cloudResponse)
+//sD stands for staffDp
 
-    cloudResponse.forEach((e) => {
-      const obj = { secureUrl: e.secure_url, publicId: e.public_id };
-      result.push(obj);
-    });
-    console.log(result)
+        const sDfilepath = sDFiles.map((e)=>e.path)
+        const proffilePath = profilePhotoFiles.map((e)=>e.path)
+        console.log(sDfilepath)
+        console.log(proffilePath)
+        
 
-    await Promise.all(
-      filePaths.map((e) => fs.unlinkSync(e))
-    );
-       
-        const {staffName, position, staffDp, salary} = req.body;
-        const {organizationId} = req.params; 
-        const newStaff = await staffTables.create({ 
+        const sDUploadPicturetoCloudinary = sDfilepath.map((e)=>cloudinary.uploader.upload(e))
+        const profilepUploadtoCloudinary = proffilePath.map((e)=>cloudinary.uploader.upload(e))
+        
+
+        const sDresponses = await Promise.all(sDUploadPicturetoCloudinary)
+        const ProfResponses = await Promise.all(profilepUploadtoCloudinary)
+
+
+        const sDextracturl = sDresponses.map((e)=>e.secure_url)
+        const profExtracturl = ProfResponses.map((e)=>e.secure_url)
+
+
+        const {staffName, position, salary} = req.body;
+        const {organizationId} = req.params;
+
+        await Promise.all(
+                    sDFiles.map((e)=>{
+                        fs.unlinkSync(e.path)
+                        
+                    })
+                )
+
+            await Promise.all(
+                profilePhotoFiles.map((e)=>{
+                    fs.unlinkSync(e.path)
+                })
+
+            )
+
+        const newStaff = await staffTables.create({
             staffName,
             position,
             organizationId,
-            staffDp: result,
-            salary
-        
+            staffDp:sDextracturl,
+            salary,
+            profilePhoto:profExtracturl
         });
+
         res.status(201).json({
-            message: 'successfully created a staff',
+            message: 'successfully created a new staff',
             data: newStaff
         });
     } catch (error) {
         console.log(error);
         res.status(500).json({ 
             message: "something went wrong",
+            data: error.message
         });
     }
 };
