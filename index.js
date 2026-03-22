@@ -7,7 +7,7 @@ const app = express()
 const orgRouter = require('./router/organizationRoute')
 
 const staffRouter = require('./router/staffRoute')
-const staffRouter = require('./router/staffRoute')
+
 const orderRoute = require('./router/orderRouter')
 
 const equipmentRouter = require('./router/equipment')
