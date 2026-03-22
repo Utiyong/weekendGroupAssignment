@@ -3,7 +3,9 @@ const cloudinary = require('../middleware/cloudinary')
 const fs = require('fs')
 const {Organization} = require('../models')
 const {staffTables} = require('../models')
-
+const { delivery } = require('../models')
+const {equipment} = require('../models')
+const organization = require('../models/organization')
 
 exports.createOrder = async(req, res) =>{
     try{
@@ -65,3 +67,4 @@ exports.createOrder = async(req, res) =>{
         console.log(error)
     }
 }
+
