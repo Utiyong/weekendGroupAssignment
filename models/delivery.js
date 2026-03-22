@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.delivery.belongsTo(models.Organization, {foreignKey: 'organizationId', as: 'delive'})
     }
   }
   delivery.init({
@@ -22,7 +22,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     processBy: DataTypes.STRING,
     status:DataTypes.ENUM('pending', 'in_progress', 'completed'),
-    cloths: DataTypes.STRING
+    clothes: DataTypes.STRING,
+    organizationId: DataTypes.STRING,
+    staffId: DataTypes.STRING,
+    orderId: DataTypes.STRING
+
+
+
+
   }, {
     sequelize,
     modelName: 'delivery',
