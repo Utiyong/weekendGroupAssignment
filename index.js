@@ -2,18 +2,25 @@ const express = require('express')
 require('dotenv').config()
 
 const PORT = 2094
-
 const app = express()
-app.use(express.json())
 
 const orgRouter = require('./router/organizationRoute')
+
+const staffRouter = require('./router/staffRoute')
 const staffRouter = require('./router/staffRoute')
 const orderRoute = require('./router/orderRouter')
 
 const equipmentRouter = require('./router/equipment')
 
+const deliveryRouter = require('./router/delivery')
+
+app.use(express.json())
+
 app.use(orgRouter)
 app.use(staffRouter)
+
+app.use(equipmentRouter) 
+app.use(deliveryRouter)
 app.use(equipmentRouter)
 app.use(orderRoute)
 
