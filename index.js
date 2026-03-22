@@ -19,8 +19,7 @@ const deliveryRouter = require('./router/delivery')
 
 app.use(orgRouter)
 app.use(staffRouter)
-
-app.use(equipmentRouter) 
+ 
 app.use(deliveryRouter)
 app.use(equipmentRouter)
 app.use(orderRoute)
