@@ -1,6 +1,10 @@
-const { Organization} = require('../models')
-const cloudinary  = require('../middleware/cloudinary')
+const { order } = require('../models')
+const cloudinary = require('../middleware/cloudinary')
 const fs = require('fs')
+const {Organization} = require('../models')
+const {staffTables} = require('../models')
+const { delivery } = require('../models')
+const {equipment} = require('../models')
 
 exports.createOrganization = async(req, res) =>{
     try{
@@ -48,6 +52,61 @@ exports.createOrganization = async(req, res) =>{
         })
         console.log(error)
 
+
+    }
+}
+
+
+
+
+exports.apisolution = async(req, res) =>{
+    try{
+        const {id} = req.params
+
+        const newApi = await Organization.findAll({
+            where: {
+                id: id
+            },
+            attributes: ["name"],
+            include: [
+                {
+                    model: staffTables,
+                    as : "neworg",
+                    attributes: ["staffName", "staffDp"]
+
+                },
+                {
+                    model: equipment,
+                    as:"newEqui",
+                    attributes: ["Name", "images"]
+
+                },
+                {
+                    model: order,
+                    as:"newOrders",
+                    attributes: ["Type", "images", "amount", "status"]
+
+                },
+                {
+                    model: delivery,
+                    as: 'newDelivery',
+                    attributes: ["processBy"]
+
+                },
+                   ]
+        })
+        res.status(200).json({
+            message:"gotten the unique api",
+            data: newApi
+        })
+
+    }
+    catch(error){
+        res.status(500).json({
+            message: "something went wrong",
+            data: error.message
+        })
+        console.log(error)
 
     }
 }
