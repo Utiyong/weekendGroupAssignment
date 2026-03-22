@@ -7,6 +7,8 @@ const app = express()
 const orgRouter = require('./router/organizationRoute')
 
 const staffRouter = require('./router/staffRoute')
+const staffRouter = require('./router/staffRoute')
+const orderRoute = require('./router/orderRouter')
 
 const equipmentRouter = require('./router/equipment')
 
@@ -19,6 +21,8 @@ app.use(staffRouter)
 
 app.use(equipmentRouter) 
 app.use(deliveryRouter)
+app.use(equipmentRouter)
+app.use(orderRoute)
 
 
 app.listen(PORT, ()=>{
