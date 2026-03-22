@@ -39,6 +39,7 @@ exports.createDelivery = async(req, res) =>{
         console.log(error)
         res.status(500).json({
             message: "something went wrong",
+            data: error.message
         })
     }
 }
