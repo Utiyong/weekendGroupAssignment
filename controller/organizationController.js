@@ -5,6 +5,7 @@ const {Organization} = require('../models')
 const {staffTables} = require('../models')
 const { delivery } = require('../models')
 const {equipment} = require('../models')
+const { where } = require('sequelize')
 
 exports.createOrganization = async(req, res) =>{
     try{
@@ -108,5 +109,39 @@ exports.apisolution = async(req, res) =>{
         })
         console.log(error)
 
+    }
+}
+
+exports.getAllOrders = async(req, res) =>{
+    try{
+        const allOrder = await Organization.findAll({
+           where: {id: id
+           },
+           attributes: ["name"],
+              include: [
+                {
+                    model: delivery,
+                    as : "newdeliveries",
+                    attributes: ["processBy"]
+                },
+                {
+                    model: order,
+                    as: "neworderStat",
+                    attributes: ["status"]
+                }
+            ]
+
+        })
+        res.status(200).json({
+            message: "successfully fetched all organizations",
+            data: allOrder
+        })
+    }
+    catch(error){
+        res.status(500).json({
+            message: "something went wrong",
+            data: error.message
+        })
+        console.log(error)
     }
 }
